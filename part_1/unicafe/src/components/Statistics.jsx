@@ -7,14 +7,16 @@ export function Statistics({good, bad, neutral}) {
 
     if(good !== 0 && bad !== 0 && neutral !== 0) {
         return (
-            <div>
-                <StatisticLine text="good" value={good} />
-                <StatisticLine text="neutral" value={neutral} />
-                <StatisticLine text="bad" value={bad} />
-                <StatisticLine text="total" value={total} />
-                <StatisticLine text="average" value={average} />
-                <StatisticLine text="positive" value={positive} isPercent={true} />
-            </div>
+            <table>
+                <tbody>
+                    <StatisticLine text="good" value={good} />
+                    <StatisticLine text="neutral" value={neutral} />
+                    <StatisticLine text="bad" value={bad} />
+                    <StatisticLine text="total" value={total} />
+                    <StatisticLine text="average" value={average} />
+                    <StatisticLine text="positive" value={positive} isPercent={true} />
+                </tbody>
+            </table>
         )
     }
     return (
