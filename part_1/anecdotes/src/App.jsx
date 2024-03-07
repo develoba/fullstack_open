@@ -14,9 +14,19 @@ function App() {
     'The only way to go fast, is to go well.'
   ]
 
+  const getRandomNumber = (min, max) => {
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  const handleSelected = () => {
+    const newSelected = getRandomNumber(0, anecdotes.length)
+    setSelected(newSelected)
+  }
+
   return(
     <div>
-      {anecdotes[selected]}
+      <button onClick={handleSelected}>Generate new anecdote</button>
+      <p>{anecdotes[selected]}</p>
     </div>
   )
 }
