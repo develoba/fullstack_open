@@ -33,11 +33,11 @@ function App() {
     setMaxVoted(max)
   }
 
-  const getMaxVoted = (votes) => {
-    let max = votes[0]
-    for(let i = 1; i < votes.length; i++) {
-      if(votes[i] > max) {
-        max = votes[i]
+  const getMaxVoted = (v) => {
+    let max = v[0]
+    for(let i = 1; i < v.length; i++) {
+      if(v[i] > max) {
+        max = i
       }
     }
     return max;
