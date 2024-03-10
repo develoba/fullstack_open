@@ -2,10 +2,15 @@ import { useState } from "react"
 
 function App() {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '+34-123-45-65-76' }
+    { name: 'Arto Hellas', number: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
   ]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [newFilter, setNewFilter] = useState('')
+  const [filteredPersons, setFilteredPersons] = useState([])
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -30,9 +35,25 @@ function App() {
     setNewNumber(event.target.value)
   }
 
+  const handleFilter = (event) => {
+    setNewFilter(event.target.value)
+    const newFilteredPersons = []
+    persons.forEach(person => {
+      if (person.name.includes(event.target.value)) {
+        newFilteredPersons.push(person)
+      }
+    })
+    setFilteredPersons(newFilteredPersons)
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        filter shown with <input value={newFilter} onChange={handleFilter} />
+      </div>
+      {filteredPersons.map(filteredPerson => <p key={filteredPerson.name}>{filteredPerson.name} {filteredPerson.number}</p>)}
+      <h2>Add New</h2>
       <form onSubmit={addPerson}>
         <div>
           name: <input value={newName} onChange={handleNameChange} />
