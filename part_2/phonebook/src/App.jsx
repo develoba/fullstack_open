@@ -8,13 +8,20 @@ function App() {
 
   const addPerson = (event) => {
     event.preventDefault()
-    console.log(newName)
-    const newPerson = {name: newName}
-    setPersons(persons.concat(newPerson))
+    let exists = false
+    persons.forEach((person) => {
+      if (person.name == newName) {
+        alert(`${newName} is alreadey added to phonebook`)
+        exists = true
+      }
+    })
+    if (!exists) {
+      const newPerson = {name: newName}
+      setPersons(persons.concat(newPerson))
+    }
   }
   
   const handleNameChange = (event) => {
-    console.log(event.target.value)
     setNewName(event.target.value)
   }
 
@@ -30,7 +37,7 @@ function App() {
         </div>
       </form>
       <h2>Numbers</h2>
-      ...
+      {persons.map(person => <p key={person.name}>{person.name}</p>)}
     </div>
   )
 }
