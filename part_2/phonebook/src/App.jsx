@@ -20,15 +20,24 @@ function App() {
   const addPerson = (event) => {
     event.preventDefault();
     let exists = false;
+    const newPerson = { name: newName, number: newNumber };
+
     persons.forEach((person) => {
       if (person.name == newName) {
-        alert(`${newName} is alreadey added to phonebook`);
         exists = true;
+        const update = window.confirm(
+          `${newName} is already added to the phonebook, replace the old number with a new one?`
+        );
+        if (update) {
+          personsService.update(person.id, newPerson).then((returnedPerson) => {
+            setPersons(
+              persons.map((p) => (p.id !== person.id ? p : returnedPerson))
+            );
+          });
+        }
       }
     });
     if (!exists) {
-      const newPerson = { name: newName, number: newNumber };
-
       personsService.create(newPerson).then((response) => {
         setPersons(persons.concat(response));
       });
@@ -56,14 +65,11 @@ function App() {
 
   const handleDelete = async (personId) => {
     if (window.confirm()) {
-      const deleteStatus = await personsService.remove(personId);
-      if (deleteStatus == 200) {
-        personsService.getAll().then((response) => {
-          setPersons(response);
-        });
-      } else {
-        alert("There was an error deleting this contact");
-      }
+      personsService.remove(personId).then((response) => {
+        if (response.status == 200) {
+          setPersons(persons.filter((p) => p.id !== personId));
+        }
+      });
     }
   };
 
