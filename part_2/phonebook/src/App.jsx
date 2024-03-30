@@ -3,6 +3,7 @@ import { Filter } from "./components/Filter";
 import { PersonForm } from "./components/PersonForm";
 import { Persons } from "./components/Persons";
 import personsService from "./services/persons";
+import { Notification } from "./components/Notification";
 
 function App() {
   const [persons, setPersons] = useState([]);
@@ -10,6 +11,7 @@ function App() {
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
   const [filteredPersons, setFilteredPersons] = useState([]);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   useEffect(() => {
     personsService.getAll().then((response) => {
@@ -40,6 +42,10 @@ function App() {
     if (!exists) {
       personsService.create(newPerson).then((response) => {
         setPersons(persons.concat(response));
+        setSuccessMessage(`Added ${response.name}`);
+        setTimeout(() => {
+          setSuccessMessage(null);
+        }, 2000);
       });
     }
   };
@@ -83,6 +89,7 @@ function App() {
       />
 
       <h3>Add New</h3>
+      <Notification message={successMessage} />
       <PersonForm
         onSubmit={addPerson}
         name={newName}

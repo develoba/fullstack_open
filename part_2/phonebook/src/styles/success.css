@@ -1,0 +1,9 @@
+.success {
+    color: green;
+    background-color: lightgray;
+    font-size: 20px;
+    border: 1px solid green;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
