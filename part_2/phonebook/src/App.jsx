@@ -12,6 +12,7 @@ function App() {
   const [newFilter, setNewFilter] = useState("");
   const [filteredPersons, setFilteredPersons] = useState([]);
   const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     personsService.getAll().then((response) => {
@@ -31,11 +32,26 @@ function App() {
           `${newName} is already added to the phonebook, replace the old number with a new one?`
         );
         if (update) {
-          personsService.update(person.id, newPerson).then((returnedPerson) => {
-            setPersons(
-              persons.map((p) => (p.id !== person.id ? p : returnedPerson))
-            );
-          });
+          personsService
+            .update(person.id, newPerson)
+            .then((returnedPerson) => {
+              setPersons(
+                persons.map((p) => (p.id !== person.id ? p : returnedPerson))
+              );
+              setSuccessMessage(`Added ${returnedPerson.name}`);
+              setTimeout(() => {
+                setSuccessMessage(null);
+              }, 2000);
+            })
+            .catch((error) => {
+              console.log(error);
+              setErrorMessage(
+                `Information of ${newPerson.name} has already been removed from server`
+              );
+              setTimeout(() => {
+                setErrorMessage(null);
+              }, 2000);
+            });
         }
       }
     });
@@ -89,7 +105,10 @@ function App() {
       />
 
       <h3>Add New</h3>
-      <Notification message={successMessage} />
+      <Notification
+        successMessage={successMessage}
+        errorMessage={errorMessage}
+      />
       <PersonForm
         onSubmit={addPerson}
         name={newName}

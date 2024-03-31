@@ -1,9 +1,13 @@
 import "../styles/success.css";
 
-export function Notification({ message }) {
-  if (message === null) {
+export function Notification({ successMessage, errorMessage }) {
+  if (!successMessage && !errorMessage) {
     return null;
   }
 
-  return <div className="success">{message}</div>;
+  return (
+    <div className={`${successMessage ? "success" : "error"}`}>
+      {successMessage}
+    </div>
+  );
 }
