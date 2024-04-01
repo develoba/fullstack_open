@@ -11,8 +11,8 @@ function App() {
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
   const [filteredPersons, setFilteredPersons] = useState([]);
-  const [successMessage, setSuccessMessage] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [isError, setIsError] = useState(null);
 
   useEffect(() => {
     personsService.getAll().then((response) => {
@@ -38,18 +38,20 @@ function App() {
               setPersons(
                 persons.map((p) => (p.id !== person.id ? p : returnedPerson))
               );
-              setSuccessMessage(`Added ${returnedPerson.name}`);
+              setMessage(`Added ${returnedPerson.name}`);
               setTimeout(() => {
-                setSuccessMessage(null);
+                setMessage(null);
               }, 2000);
             })
             .catch((error) => {
               console.log(error);
-              setErrorMessage(
+              setMessage(
                 `Information of ${newPerson.name} has already been removed from server`
               );
+              setIsError(true);
               setTimeout(() => {
-                setErrorMessage(null);
+                setMessage(null);
+                setIsError(null);
               }, 2000);
             });
         }
@@ -58,9 +60,9 @@ function App() {
     if (!exists) {
       personsService.create(newPerson).then((response) => {
         setPersons(persons.concat(response));
-        setSuccessMessage(`Added ${response.name}`);
+        setMessage(`Added ${response.name}`);
         setTimeout(() => {
-          setSuccessMessage(null);
+          setMessage(null);
         }, 2000);
       });
     }
@@ -105,10 +107,7 @@ function App() {
       />
 
       <h3>Add New</h3>
-      <Notification
-        successMessage={successMessage}
-        errorMessage={errorMessage}
-      />
+      <Notification message={message} isError={isError} />
       <PersonForm
         onSubmit={addPerson}
         name={newName}
