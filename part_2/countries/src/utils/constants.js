@@ -1,0 +1,1 @@
+export const apiUrl = 'https://studies.cs.helsinki.fi/restcountries/api/all'
