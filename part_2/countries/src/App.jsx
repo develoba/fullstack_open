@@ -7,12 +7,26 @@ import { Country } from "./components/Country";
 function App() {
   const [countries, setCountries] = useState([]);
   const [filteredCountries, setFilteredCountries] = useState([]);
+  const [weather, setWeather] = useState(null);
 
   useEffect(() => {
     axios.get(`${Constants.apiUrl}`).then((response) => {
       setCountries(response.data);
     });
   }, []);
+
+  useEffect(() => {
+    if (filteredCountries.length === 1) {
+      const lat = filteredCountries[0].latlng[0];
+      const lon = filteredCountries[0].latlng[1];
+
+      axios
+        .get(
+          `${Constants.weatherApi}?lat=${lat}&lon=${lon}&appid=${Constants.apiKey}`
+        )
+        .then((response) => setWeather(response.data));
+    }
+  }, [filteredCountries]);
 
   const handleSearch = (event) => {
     const search = event.target.value;
@@ -54,6 +68,7 @@ function App() {
             languages={filteredCountries[0].languages}
             flagSrc={filteredCountries[0].flags["svg"]}
             flagAlt={filteredCountries[0].flags["alt"]}
+            weather={weather}
           />
         ) : (
           <ul className="w-[40%] flex flex-col justify-between items-center gap-2">
