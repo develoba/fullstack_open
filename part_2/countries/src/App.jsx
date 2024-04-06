@@ -25,30 +25,45 @@ function App() {
           searchCountries.push(country);
         }
       });
-      setFilteredCountries(searchCountries);
+      if (search.trim() === "") {
+        setFilteredCountries([]);
+      } else {
+        setFilteredCountries(searchCountries);
+      }
     }
   };
 
   return (
-    <>
-      <form>
-        <label>find countries</label>
-        <input className="ml-5" onChange={handleSearch} />
+    <div className="h-full py-8 flex flex-col gap-8">
+      <form className="text-center">
+        <label>Search country:</label>
+        <input className="ml-2" onChange={handleSearch} />
       </form>
-      {filteredCountries.length > 10 ? (
-        <p>Too many matches, specify another filter</p>
-      ) : filteredCountries.length === 1 ? (
-        <Country name={filteredCountries[0].name.common} />
-      ) : (
-        <ul>
-          {filteredCountries.map((filteredCountry) => {
-            return (
-              <li key={filteredCountry.ccn3}>{filteredCountry.name.common}</li>
-            );
-          })}
-        </ul>
-      )}
-    </>
+      <div className="flex-initial flex-grow">
+        {filteredCountries.length > 10 ? (
+          <p>Too many matches, specify another filter</p>
+        ) : filteredCountries.length === 1 ? (
+          <Country
+            name={filteredCountries[0].name.common}
+            capital={filteredCountries[0].capital[0]}
+            area={filteredCountries[0].area}
+            languages={filteredCountries[0].languages}
+            flagSrc={filteredCountries[0].flags["svg"]}
+            flagAlt={filteredCountries[0].flags["alt"]}
+          />
+        ) : (
+          <ul className="text-center">
+            {filteredCountries.map((filteredCountry) => {
+              return (
+                <li key={filteredCountry.ccn3}>
+                  {filteredCountry.name.common}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
+    </div>
   );
 }
 
