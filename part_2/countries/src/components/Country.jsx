@@ -1,7 +1,7 @@
 // eslint-disable-next-line react/prop-types
 export function Country({ name, capital, area, languages, flagSrc, flagAlt }) {
   return (
-    <section className="p-8 mx-10 bg-stone-700/30 rounded-lg shadow-2xl flex justify-between">
+    <section className="w-[85%] p-8 mx-10 bg-stone-700/30 rounded-lg shadow-2xl flex justify-between">
       <article>
         <div className="mb-5">
           <h2 className="text-3xl font-bold">{name}</h2>

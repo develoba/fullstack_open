@@ -33,13 +33,17 @@ function App() {
     }
   };
 
+  const handleSelectCountry = (countrySelected) => {
+    setFilteredCountries([countrySelected]);
+  };
+
   return (
     <div className="h-full py-8 flex flex-col gap-8">
       <form className="text-center">
         <label>Search country:</label>
         <input className="ml-2" onChange={handleSearch} />
       </form>
-      <div className="flex-initial flex-grow">
+      <div className="flex-initial flex-grow flex justify-center">
         {filteredCountries.length > 10 ? (
           <p>Too many matches, specify another filter</p>
         ) : filteredCountries.length === 1 ? (
@@ -52,11 +56,19 @@ function App() {
             flagAlt={filteredCountries[0].flags["alt"]}
           />
         ) : (
-          <ul className="text-center">
+          <ul className="w-[40%] flex flex-col justify-between items-center gap-2">
             {filteredCountries.map((filteredCountry) => {
               return (
-                <li key={filteredCountry.ccn3}>
-                  {filteredCountry.name.common}
+                <li
+                  key={filteredCountry.ccn3}
+                  className="w-full flex gap-5 items-center justify-between"
+                >
+                  <p className="font-semibold uppercase">
+                    {filteredCountry.name.common}
+                  </p>
+                  <button onClick={() => handleSelectCountry(filteredCountry)}>
+                    see more
+                  </button>
                 </li>
               );
             })}
